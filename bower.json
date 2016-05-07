@@ -1,0 +1,28 @@
+{
+  "name": "xliff-conv",
+  "version": "0.0.0",
+  "description": "XLIFF to/from JSON converter for Polymer i18n-behavior",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/t2ym/xliff-conv.git"
+  },
+  "main": "xliff-conv.js",
+  "keywords": [
+    "polymer",
+    "web-component",
+    "web-components",
+    "i18n",
+    "internationalization",
+    "l10n",
+    "localization"
+  ],
+  "license": "BSD-2-Clause",
+  "homepage": "https://t2ym.github.io/xliff-conv/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {}
+}
+

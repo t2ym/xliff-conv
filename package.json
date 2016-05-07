@@ -1,0 +1,32 @@
+{
+  "name": "xliff-conv",
+  "version": "0.0.1",
+  "description": "XLIFF to/from JSON converter for Polymer i18n-behavior",
+  "scripts": {
+    "test": "mocha test/*.js"
+  },
+  "main": "xliff-conv.js",
+  "author": "Tetsuya Mori <t2y3141592@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/t2ym/xliff-conv/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/t2ym/xliff-conv.git"
+  },
+  "keywords": [
+    "polymer",
+    "web-component",
+    "web-components",
+    "i18n",
+    "internationalization",
+    "gulp"
+  ],
+  "dependencies": {
+    "xmldom": "^0.1.22"
+  },
+  "devDependencies": {
+    "mocha": "~1.21.x"
+  }
+}
