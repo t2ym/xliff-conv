@@ -155,7 +155,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 #### `options` object
 
 - date: Date, default: new Date() - date attribute value for XLIFF
-- xliffStates: Object, default: xliffConv.xliffStates.default - todo.op to XLIFF state mapping table
+- xliffStates: Object, default: XliffConv.xliffStates.default - todo.op to XLIFF state mapping table
 
 #### `XliffConv.xliffStates` object - default value for options.xliffStates
 
