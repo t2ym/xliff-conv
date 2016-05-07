@@ -45,7 +45,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 
 ### Import XLIFF task on gulp
 
-#### Note: This task has to be processed before [Leverage task with unbundle](#leverage-task-with-unbundle) to pick up outputs of this task.
+#### Note: This task has to be processed before Leverage task with unbundle](https://github.com/t2ym/gulp-i18n-leverage#leverage-task-with-unbundle) to pick up outputs of this task.
 
 #### Input:
   - Next XLIFF files in source
