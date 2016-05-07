@@ -8,6 +8,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 - Generate XLIFF from bundles
 - Map todo operations in bundles onto XLIFF states
 - Update todo operations in bundles with XLIFF states
+- [UMD](https://github.com/ruyadorno/generator-umd) support
 
 ## TODOs
 
@@ -15,13 +16,15 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 
 ## Install
 
-### On Node.js
+### For Node.js
 
 ```javascript
     npm install --save-dev xliff-conv
 ```
 
-### On Browsers
+[Quick Tour](https://github.com/t2ym/polymer-starter-kit-i18n#quick-tour) with polymer-starter-kit-i18n
+
+### For Browsers
 
 ```javascript
 	bower install --save xliff-conv
