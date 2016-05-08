@@ -1,6 +1,6 @@
-# xliff-conv (work in progress)
+# xliff-conv
 
-XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym/i18n-behavior)
+XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym/i18n-behavior) (work in progress)
 
 ## Features
 
@@ -13,6 +13,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 ## TODOs
 
 - Test suites on node.js and browsers
+- Handy migration from [xliff2bundlejson](https://github.com/t2ym/xliff2bundlejson)
 
 ## Install
 
@@ -100,6 +101,8 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 ```
 
 ### Export XLIFF task on gulp
+
+#### Note: If the `todo` items in JSON files are removed, the corresponding `trans-unit`s are treated as `approved="yes"` and `state="translated"`.
 
 #### Input:
   - Next bundles object in gulpfile.js
