@@ -1,6 +1,6 @@
 {
   "name": "xliff-conv",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "XLIFF to/from JSON converter for Polymer i18n-behavior",
   "scripts": {
     "test": "mocha test/*.js"
