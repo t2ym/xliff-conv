@@ -159,6 +159,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 }
               }
               else {
+                // Fix #3. Handle the default state.
+                state = state || '';
                 if (this.todoOps[state] && this.todoOps[state][0]) {
                   if (this.todoOps[state][0] !== 'default') {
                     if (todo) {
