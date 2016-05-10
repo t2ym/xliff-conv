@@ -219,13 +219,14 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 | needs-translation        | no or N/A | replace |             |
 | needs-adaptation         | no or N/A | replace |             |
 | needs-l10n               | no or N/A | replace |             |
+| N/A                      | no or N/A | replace |             |
 | needs-review-translation | no or N/A | review  |             |
 | needs-review-adaptation  | no or N/A | review  |             |
 | needs-review-l10n        | no or N/A | review  |             |
 | translated               | yes       | N/A     | Remove todo |
 | signed-off               | yes       | N/A     | Remove todo |
 | final                    | yes       | N/A     | Remove todo |
-| N/A                      | *         | N/A     | Remove todo |
+| N/A                      | yes       | N/A     | Remove todo |
 
 ## License
 
