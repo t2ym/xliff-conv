@@ -37,6 +37,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     this.logger = options.logger || console.log;
     this.warnLogger = options.warnLogger || console.warn;
     this.errorLogger = options.errorLogger || console.error;
+    this.toolVersion = '0.0.3';
   };
 
   xliffConv.xliffStates = {
@@ -247,7 +248,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               'original="' + (options.original || 'messages') + '" ' +
               'date="' + this.date.toISOString().replace(/[.][0-9]*Z$/, 'Z') + '" ' +
               'product-name="' + (options.productName || 'messages') + '">\n' +
-      '  <header/>\n' +
+      '    <header>\n' +
+      '      <tool tool-id="xliff-conv" tool-name="xliff-conv" tool-version="' + this.toolVersion + '"/>\n' +
+      '    </header>\n' +
       '    <body>\n' +
           '</body>\n' +
       '  </file>\n' +
