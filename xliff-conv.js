@@ -34,6 +34,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     this.XMLSerializer = this.xmldom.XMLSerializer;
     this.xliffStates = options.xliffStates || xliffConv.xliffStates.default;
     this.todoOps = this._todoOps(this.xliffStates);
+    this.logger = options.logger || console.log;
+    this.warnLogger = options.warnLogger || console.warn;
+    this.errorLogger = options.errorLogger || console.error;
   };
 
   xliffConv.xliffStates = {
@@ -188,21 +191,21 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             }
             else {
               // discard value
-              console.log('XliffConv: id = ' + id + ' discarding value ' + value + 
+              this.warnLogger('XliffConv: id = ' + id + ' discarding value "' + value + '"' + 
                 ' as source \"' + source + '\" does not match with todo.value "' + todo.value + '"');
             }
             paths.shift();
           }
           else {
             // missing resource
-            console.log('XliffConv: id = ' + id + ' is missing');
+            this.warnLogger('XliffConv: id = ' + id + ' is missing');
           }
           break;
         }
         else {
           if (!cursor[paths[0]]) {
             // missing resource
-            console.log('XliffConv: id = ' + id + ' is missing');
+            this.warnLogger('XliffConv: id = ' + id + ' is missing');
             break;
           }
           cursor = cursor[paths.shift()];
