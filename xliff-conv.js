@@ -94,6 +94,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       var state = targetTag.getAttribute('state');
       var cursor = output;
       var paths = id.split('.').map(function (p) { return p.replace(/_\$DOT\$_/g, '.'); });
+      var component = paths[0];
       var parsed;
       var value;
       var todo;
@@ -158,12 +159,25 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 }
               }
               else {
-                if (todo) {
-                  if (this.todoOps[state] && this.todoOps[state][0]) {
-                    if (this.todoOps[state][0] !== 'default') {
+                if (this.todoOps[state] && this.todoOps[state][0]) {
+                  if (this.todoOps[state][0] !== 'default') {
+                    if (todo) {
                       todo.op = this.todoOps[state][0];
                     }
                     else {
+                      // Fix #1. Populate missing todo item.
+                      todo = {
+                        'op': this.todoOps[state][0],
+                        'path': '/' + id.split('.').splice(1).join('/').replace(/_\$DOT\$_/g, '.'),
+                        'value': source
+                      };
+                      output[component].meta = output[component].meta || {};
+                      output[component].meta.todo = output[component].meta.todo || [];
+                      output[component].meta.todo.push(todo);
+                    }
+                  }
+                  else {
+                    if (todo) {
                       todo.op = 'noop';
                     }
                   }
