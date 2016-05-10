@@ -184,6 +184,10 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 - bundles: Object, bundles object
 - options.srcLanguage: String, default: 'en' - source language
 - options.destLanguage: String, default: 'fr' - target language
+- options.xmlSpace: String, default: 'default' - `<file xml:space>` attribute
+- options.dataType: String, default: 'plaintext' - `<file datatype>` attribute
+- options.original: String, default: 'messages' - `<file original>` attribute
+- options.productName: String, default: 'messages' - `<file product-name>` attribute
 - callback: Function, callback(output) with output XLIFF as a string
 
 ### Custom XLIFF restype attributes
