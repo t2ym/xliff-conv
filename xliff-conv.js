@@ -37,7 +37,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     this.logger = options.logger || console.log;
     this.warnLogger = options.warnLogger || console.warn;
     this.errorLogger = options.errorLogger || console.error;
-    this.toolVersion = '0.0.4';
+    this.toolVersion = '0.0.5';
   };
 
   XliffConv.xliffStates = {
