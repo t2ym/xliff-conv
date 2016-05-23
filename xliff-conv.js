@@ -25,14 +25,14 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
 // UMD Definition above, do not remove this line
   'use strict';
 
-  var xliffConv = function xliffConv(options) {
+  var XliffConv = function XliffConv(options) {
     options = options || {};
     this.useSources = options.useSources || false;
     this.date = options.date || new Date();
     this.xmldom = typeof window === 'object' ? window : require('xmldom');
     this.DOMParser = this.xmldom.DOMParser;
     this.XMLSerializer = this.xmldom.XMLSerializer;
-    this.xliffStates = options.xliffStates || xliffConv.xliffStates.default;
+    this.xliffStates = options.xliffStates || XliffConv.xliffStates.default;
     this.todoOps = this._todoOps(this.xliffStates);
     this.logger = options.logger || console.log;
     this.warnLogger = options.warnLogger || console.warn;
@@ -40,7 +40,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     this.toolVersion = '0.0.4';
   };
 
-  xliffConv.xliffStates = {
+  XliffConv.xliffStates = {
     'default': {
       'add'    : [ 'new' ],
       'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
@@ -49,7 +49,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     }
   };
 
-  xliffConv.prototype._todoOps = function (xliffStates) {
+  XliffConv.prototype._todoOps = function (xliffStates) {
     var output = {};
     for (var op in xliffStates) {
       for (var i in xliffStates[op]) {
@@ -60,7 +60,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     return output;
   };
 
-  xliffConv.prototype.parseXliff = function (xliff, options, callback) {
+  XliffConv.prototype.parseXliff = function (xliff, options, callback) {
     var args = arguments;
     [ 'string', 'object', 'function' ].forEach(function (type, index) {
       if (!args[index] || typeof args[index] !== type) {
@@ -227,7 +227,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     callback(output);
   };
 
-  xliffConv.prototype.parseJSON = function (bundles, options, callback) {
+  XliffConv.prototype.parseJSON = function (bundles, options, callback) {
     var args = arguments;
     [ 'object', 'object', 'function' ].forEach(function (type, index) {
       if (!args[index] || typeof args[index] !== type) {
@@ -319,7 +319,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     callback(xmlHeader + serializer.serializeToString(xliff));
   };
 
-  xliffConv.prototype._stringify = function (value) {
+  XliffConv.prototype._stringify = function (value) {
     switch (typeof value) {
     case 'string':
       return value;
@@ -335,7 +335,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     }
   };
 
-  xliffConv.prototype._traverseBundle = function (id, source, target, callback) {
+  XliffConv.prototype._traverseBundle = function (id, source, target, callback) {
     if (typeof target === 'object') {
       for (var prop in target) {
         if (id === '' && prop === 'meta') {
@@ -353,5 +353,5 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     }
   };
 
-  return xliffConv;
+  return XliffConv;
 }));
