@@ -41,11 +41,34 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
   };
 
   XliffConv.xliffStates = {
+    // All state-less unapproved strings are regarded as needs-translation
     'default': {
       'add'    : [ 'new' ],
       'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]' ]
+    },
+    /* === State Mapping Tables for migration from xliff2bundlejson === */
+    // All state-less strings are regarded as approved=yes
+    'approveAll': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '' ]
+    },
+    // State-less translated strings need review
+    'reviewTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '[!state&&!approved&&source==target]', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n', '[!state&&!approved&&source!=target]' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]' ]
+    },
+    // State-less translated strings are regarded as approved=yes
+    'approveTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '[!state&&!approved&&source==target]', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
   };
 
@@ -58,6 +81,54 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       }
     }
     return output;
+  };
+
+  XliffConv.prototype._resolveTodoOps = function (parameters) {
+    var result = this.todoOps[''][0];
+    var match;
+    if (parameters.state &&
+        this.todoOps[parameters.state] &&
+        this.todoOps[parameters.state][0]) {
+      result = this.todoOps[parameters.state][0];
+    }
+    else {
+      for (var prop in this.todoOps) {
+        match = prop.match(/^\[(.*)\]$/);
+        if (match) {
+          if (match[1].split(/&&/).map(function (expression) {
+            match = expression.match(/^([\-\w]*)$/);
+            if (match) {
+              // non-null
+              return !!parameters[match[1]];
+            }
+            match = expression.match(/^!([\-\w]*)$/);
+            if (match) {
+              // negation
+              return !parameters[match[1]];
+            }
+            match = expression.match(/^([\-\w]*)==([\-\w]*)$/);
+            if (match) {
+              // equality
+              return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) ===
+                     (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
+            }
+            match = expression.match(/^([\-\w]*)!=([\-\w]*)$/);
+            if (match) {
+              // unequality
+              return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) !==
+                     (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
+            }
+            return false;
+          }).reduce(function (previous, current) {
+            return previous && current;
+          }, true)) { // Expression matched
+            result = this.todoOps[prop][0];
+            break;
+          }
+        }
+      }
+    }
+    return result;
   };
 
   XliffConv.prototype.parseXliff = function (xliff, options, callback) {
@@ -94,7 +165,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       var restype = transUnit.getAttribute('restype') || 'x-json-string';
       var source = sourceTag.textContent;
       var target = targetTag.textContent;
-      var approved = sourceTag.getAttribute('approved') === 'yes';
+      var approved = transUnit.getAttribute('approved') === 'yes';
       var state = targetTag.getAttribute('state');
       var cursor = output;
       var paths = id.split('.').map(function (p) { return p.replace(/_\$DOT\$_/g, '.'); });
@@ -102,6 +173,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       var parsed;
       var value;
       var todo;
+      var op;
       //console.log({ id: id, restype: restype, source: source, target: target, state: state, approved: approved });
       while (paths.length > 0) {
         if (paths.length === 1) {
@@ -155,7 +227,17 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               // no todo or source is matching with todo.value
               // update value
               cursor[paths[0]] = value;
-              if (approved) {
+              // map to todo.op
+              op = this._resolveTodoOps({
+                'state'    : state,
+                'id'       : id,
+                'component': component,
+                'restype'  : restype,
+                'source'   : source,
+                'target'   : target,
+                'approved' : approved // Boolean
+              });
+              if (op === 'default') {
                 // no todo for approved item
                 if (todo) {
                   // mark the todo for removal
@@ -163,30 +245,19 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 }
               }
               else {
-                // Fix #3. Handle the default state.
-                state = state || '';
-                if (this.todoOps[state] && this.todoOps[state][0]) {
-                  if (this.todoOps[state][0] !== 'default') {
-                    if (todo) {
-                      todo.op = this.todoOps[state][0];
-                    }
-                    else {
-                      // Fix #1. Populate missing todo item.
-                      todo = {
-                        'op': this.todoOps[state][0],
-                        'path': '/' + id.split('.').splice(1).join('/').replace(/_\$DOT\$_/g, '.'),
-                        'value': source
-                      };
-                      output[component].meta = output[component].meta || {};
-                      output[component].meta.todo = output[component].meta.todo || [];
-                      output[component].meta.todo.push(todo);
-                    }
-                  }
-                  else {
-                    if (todo) {
-                      todo.op = 'noop';
-                    }
-                  }
+                if (todo) {
+                  todo.op = op;
+                }
+                else {
+                  // Fix #1. Populate missing todo item.
+                  todo = {
+                    'op': op,
+                    'path': '/' + id.split('.').splice(1).join('/').replace(/_\$DOT\$_/g, '.'),
+                    'value': source
+                  };
+                  output[component].meta = output[component].meta || {};
+                  output[component].meta.todo = output[component].meta.todo || [];
+                  output[component].meta.todo.push(todo);
                 }
               }
             }
