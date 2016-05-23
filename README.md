@@ -8,12 +8,12 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 - Generate XLIFF from bundles
 - Map todo operations in bundles onto XLIFF states
 - Update todo operations in bundles with XLIFF states
+- Handy migration from [xliff2bundlejson](https://github.com/t2ym/xliff2bundlejson)
 - [UMD](https://github.com/ruyadorno/generator-umd) support
 
 ## TODOs
 
 - Test suites on node.js and browsers
-- Handy migration from [xliff2bundlejson](https://github.com/t2ym/xliff2bundlejson)
 
 ## Install
 
@@ -61,6 +61,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 ```javascript
     var gulp = require('gulp');
     var JSONstringify = require('json-stringify-safe');
+    var stripBom = require('strip-bom');
     var through = require('through2');
     var XliffConv = require('xliff-conv');
 
@@ -163,15 +164,38 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 - warnLogger: Function, default: console.warn - warning logger
 - errorLogger: Function, default: console.error - error logger
 
-#### `XliffConv.xliffStates` object - default value for options.xliffStates
+#### `XliffConv.xliffStates` object - predefined mapping tables for `options.xliffStates`
 
 ```javascript
-  {
+  XliffConv.xliffStates = {
+    // All state-less unapproved strings are regarded as needs-translation
     'default': {
       'add'    : [ 'new' ],
       'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]' ]
+    },
+    /* === State Mapping Tables for migration from xliff2bundlejson === */
+    // All state-less strings are regarded as approved=yes
+    'approveAll': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '' ]
+    },
+    // State-less translated strings need review
+    'reviewTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '[!state&&!approved&&source==target]', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n', '[!state&&!approved&&source!=target]' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]' ]
+    },
+    // State-less translated strings are regarded as approved=yes
+    'approveTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '[!state&&!approved&&source==target]', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
   }
 ```
