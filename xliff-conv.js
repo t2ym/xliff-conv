@@ -186,6 +186,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             parsed = target.match(/^_\$([a-zA-Z]*)\$_(.*)$/);
             if (parsed) {
               // process _$type$_value format for compatibility with xliff2bundlejson 
+              target = parsed[2];
               switch (parsed[1]) {
               case 'number':
                 value = Number(parsed[2]);
