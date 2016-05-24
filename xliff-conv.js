@@ -172,6 +172,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       var component = paths[0];
       var parsed;
       var value;
+      var sourceValue;
       var todo;
       var op;
       //console.log({ id: id, restype: restype, source: source, target: target, state: state, approved: approved });
@@ -189,19 +190,24 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               target = parsed[2];
               switch (parsed[1]) {
               case 'number':
+                sourceValue = Number(source);
                 value = Number(parsed[2]);
                 break;
               case 'boolean':
+                sourceValue = Boolean(source === 'true');
                 value = Boolean(parsed[2] === 'true');
                 break;
               case 'object':
+                sourceValue = JSON.parse(source);
                 value = JSON.parse(parsed[2]);
                 break;
               case 'undefined':
+                sourceValue = undefined;
                 value = undefined;
                 break;
               case 'string':
               default:
+                sourceValue = source;
                 value = parsed[2];
                 break;
               }
@@ -210,26 +216,33 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               // process <trans-unit restype="x-json-*">
               switch (restype) {
               case 'x-json-number':
+                sourceValue = Number(source);
                 value = Number(target);
                 break;
               case 'x-json-boolean':
+                sourceValue = Boolean(source === 'true');
                 value = Boolean(target === 'true');
                 break;
               case 'x-json-object':
+                sourceValue = JSON.parse(source);
                 value = JSON.parse(target);
                 break;
               case 'x-json-undefined':
+                sourceValue = undefined;
                 value = undefined;
                 break;
               case 'x-json-string':
               default:
+                sourceValue = source;
                 value = target;
                 break;                
               }
             }
             todo = todoMap[id];
             if (!todo ||
-                todo.value.replace(/\s\s*/g, ' ') === source.replace(/\s\s*/g, ' ')) {
+                (typeof todo.value === 'string' && todo.value.replace(/\s\s*/g, ' ') === source.replace(/\s\s*/g, ' ')) ||
+                (typeof todo.value === 'number' && todo.value === sourceValue) ||
+                (typeof todo.value === 'boolean' && todo.value === sourceValue)) {
               // no todo or source is matching with todo.value
               // update value
               cursor[paths[0]] = value;
@@ -259,7 +272,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                   todo = {
                     'op': op,
                     'path': '/' + id.split('.').splice(1).join('/').replace(/_\$DOT\$_/g, '.'),
-                    'value': source
+                    'value': sourceValue
                   };
                   output[component].meta = output[component].meta || {};
                   output[component].meta.todo = output[component].meta.todo || [];
@@ -270,7 +283,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             else {
               // discard value
               this.warnLogger('XliffConv: id = ' + id + ' discarding value "' + value + '"' + 
-                ' as source \"' + source + '\" does not match with todo.value "' + todo.value + '"');
+                ' as source \"' + sourceValue + '\" does not match with todo.value "' + todo.value + '"');
             }
             paths.shift();
           }
