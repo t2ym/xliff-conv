@@ -373,6 +373,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               state = this.xliffStates[todo.op][0];
             }
             else {
+              transUnit.setAttribute('approved', 'yes');
               state = this.xliffStates.default[0];
             }
           }
