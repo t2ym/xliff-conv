@@ -6,6 +6,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
 
   'use strict';
 
+  /* istanbul ignore if: AMD is not tested */
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], function () {
