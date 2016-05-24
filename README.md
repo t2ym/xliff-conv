@@ -13,7 +13,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 
 ## TODOs
 
-- Test suites on node.js and browsers
+- Test suites on browsers
 
 ## Install
 
