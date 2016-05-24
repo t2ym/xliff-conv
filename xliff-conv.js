@@ -9,7 +9,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], function () {
-      return (root.returnExportsGlobal = factory());
+      return (root.XliffConv = factory());
     });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
