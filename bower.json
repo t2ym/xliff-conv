@@ -1,6 +1,6 @@
 {
   "name": "xliff-conv",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "XLIFF to/from JSON converter for Polymer i18n-behavior",
   "repository": {
     "type": "git",

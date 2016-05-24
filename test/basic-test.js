@@ -913,8 +913,10 @@ describe('xliff-conv basic-test', function () {
       srcLanguage: srcLanguage,
       destLanguage: destLanguage
     }, function (output) {
-    	assert.equal(output, xliff_de_expected, 'XLIFF output');
-    	callback();
+      assert.equal(output,
+        xliff_de_expected.replace(/tool-version="[.0-9]*"/g, 'tool-version="' + xliffConv.toolVersion + '"'),
+        'XLIFF output');
+      callback();
     });
   });
 
