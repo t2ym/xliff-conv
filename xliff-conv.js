@@ -175,6 +175,11 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       var todo;
       var op;
       //console.log({ id: id, restype: restype, source: source, target: target, state: state, approved: approved });
+      parsed = source.match(/^_\$([a-zA-Z]*)\$_(.*)$/);
+      if (parsed) {
+        // process _$type$_value format for compatibility with xliff2bundlejson
+        source = parsed[2];
+      }
       while (paths.length > 0) {
         if (paths.length === 1) {
           if (cursor[paths[0]]) {
