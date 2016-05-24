@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/t2ym/xliff-conv?branch=master)](https://travis-ci.org/t2ym/xliff-conv)
+[![Build Status](https://travis-ci.org/t2ym/xliff-conv.svg?branch=master)](https://travis-ci.org/t2ym/xliff-conv)
 [![Coverage Status](https://coveralls.io/repos/github/t2ym/xliff-conv/badge.svg?branch=master)](https://coveralls.io/github/t2ym/xliff-conv?branch=master)
 [![npm](https://img.shields.io/npm/v/xliff-conv.svg)](https://www.npmjs.com/package/xliff-conv)
 # xliff-conv
