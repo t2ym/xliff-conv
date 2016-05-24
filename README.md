@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/t2ym/xliff-conv.svg?branch=master)](https://travis-ci.org/t2ym/xliff-conv)
 [![Coverage Status](https://coveralls.io/repos/github/t2ym/xliff-conv/badge.svg?branch=master)](https://coveralls.io/github/t2ym/xliff-conv?branch=master)
 [![npm](https://img.shields.io/npm/v/xliff-conv.svg)](https://www.npmjs.com/package/xliff-conv)
+[![Bower](https://img.shields.io/bower/v/xliff-conv.svg)](https://customelements.io/t2ym/xliff-conv/)
 # xliff-conv
 
 XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym/i18n-behavior) (work in progress)
