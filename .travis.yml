@@ -2,7 +2,8 @@ language: node_js
 branches:
   except:
   - gh-pages
-sudo: false
+sudo: required
+dist: trusty
 before_script:
   - npm install web-component-tester
   - npm install bower
