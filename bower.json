@@ -23,6 +23,8 @@
     "node_modules",
     "bower_components"
   ],
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "web-component-tester": "^4.2.2"
+  }
 }
-

@@ -3,7 +3,7 @@
   "version": "0.0.7",
   "description": "XLIFF to/from JSON converter for Polymer i18n-behavior",
   "scripts": {
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha test/*.js --report lcov -- -R spec && if [ \"${TRAVIS_BRANCH}\" != \"\" ]; then coveralls <./coverage/lcov.info; fi",
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha test/test.js --report lcov -- -R spec && if [ \"${TRAVIS_BRANCH}\" != \"\" ]; then coveralls <./coverage/lcov.info; fi",
     "clean": "rm -rvf ./coverage"
   },
   "main": "xliff-conv.js",
@@ -31,7 +31,10 @@
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
+    "lcov-result-merger": "^1.2.0",
     "mocha": "~1.21.x",
-    "mocha-lcov-reporter": "^1.2.0"
+    "mocha-lcov-reporter": "^1.2.0",
+    "web-component-tester": "^4.2.2",
+    "web-component-tester-istanbul": "^0.10.0"
   }
 }

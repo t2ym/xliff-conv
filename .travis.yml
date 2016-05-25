@@ -1,6 +1,33 @@
 language: node_js
+branches:
+  except:
+  - gh-pages
+sudo: false
+before_script:
+  - npm install web-component-tester
+  - npm install bower
+  - 'export PATH=$PWD/node_modules/.bin:$PATH'
+  - bower install
+env:
+  global:
+    - secure: "Pxy/3h2FqXuvED0EDE4v+P2KssKobMRxGH9RDe0Fzsgm7jhPmnngmfKj7s8y8e2eJVm+GhMg4uox/EE33tVtVAZCO5uyYJiC7DhAGvtBShfc59eDot2xjnLgvfk/CFsgAeAwm7h5+qKy6GtYquOBC6K3GqGqJQoEm/ItO6rqSbA0GwuHD6p7d0muF6LesPhrYA1yWIqkj3X4fAl3KritVKReA6qbEi5Sj/G0SYVPP0+dAnz/Oyqpwlhjn0r5Nf/crRzP4EBFsaSGmhRFv3GKBZhlOBzM23CLoXmSYK39GxYOOySDcaPMlJkuLpEE2gE4MJ0AgauC6BIFlpagtLzWNtyxHppDfz1XVa8k7XxjRxk/olAyJsDXG6ONbSG6jVY0CJK8LL+33SutBpwCKLwLUt+S50KTrl3m76eds7/XLBe/lNpdF5Ytruncd7qNSZ9X/thK4+eYRcWOI/phQaVRBeI9Y6y004iD2ASkE/SCYWvVzURjLdpjIn+G0syV958zoa6o6CiRnQEWN5Z1IYrx9WBM6KWUbWGSSVEJ/Ji5KKgRW1twsRvfB52XTI7fYtNkxESMfBy8RZd0HW0au8AJbFAzYiJEynYd7s7ZqD3m0okDKRrleVKGeGo+ZZdVLZW4jlCIJVTJtkFV8baqIRjjHxBUlMkwzPh8DbTg0mVy2gI="
+    - secure: "kFoZE6mizG3Mk10cLCwbvbctN+Dr70AazU8i2T0/GlMK7neXnfo2R1krbwwAjVCb+AdZlaJztQA6XiVNLnLoQfxMauyweA/L/x19delHFjiujoCL8QlnW9x2lNgDk2o7fS9vcjz1eKV9N8X41BpJGbZJryoPSDZsb7fjWeCEIfoo4PDZcOPqUknR68X+KtNA1I11GBR9fGIavvVgdULuIkDcOsCFp/h7EZ3VFgoXNUZkpgRH5qhzx2kt2guY9UAWEztzEj24KgDnHA8tAY5WuxaUh3Rlwdmh7K072tObxHbnpPF+m8JnlEl9xBMxoQTNJ1/0qqlKZKHeH42Pk2txA0D+f9T5MlyUBT9KVwa8Ys+lTOcW13gaNDVsiuPjU54Z4p1+I7TGk4lf9ZtY7a3wWYYPBuDDq3SxlmqgEgaq2XMvYTHj5+Os5OGHB/B5v+cD7kzPjVKnQ3vKvexwzDe1sHDjry7fGtDfwT4VAClRjLlOf42hAcEGv3BpKPslY45xSM8pzmIkSiMpV1D0McOu7k62yJN3ANE7M+E01G0i6Gb3R1a2gSqRYzNnQifUWsOs0XYCdYGxAh5fwE63ehouz958vVEJwb7J326IAYwBy1wz+OH2JfnEYh30+3ZM5fSDJ/lqGHF1b+GBgmqbWgYcjdl7ciSEZC399JN3XNfk2Ss="
+    - CXX=g++-4.8
 node_js:
   - "4"
   - "5"
   - "6"
-sudo: false
+addons:
+  firefox: latest
+  apt:
+    sources:
+      - google-chrome
+      - ubuntu-toolchain-r-test
+    packages:
+      - google-chrome-stable
+      - g++-4.8
+  sauce_connect: true
+script:
+  - if [ "${TRAVIS_NODE_VERSION}" == "4" ]; then xvfb-run wct; fi
+  - istanbul cover ./node_modules/mocha/bin/_mocha test/test.js --report lcov -- -R spec
+  - lcov-result-merger 'coverage*/lcov.info' | ./node_modules/coveralls/bin/coveralls.js
