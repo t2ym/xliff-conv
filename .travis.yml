@@ -27,6 +27,6 @@ addons:
     access_key:
       secure: "FQ/Ytk/Liq7v8yDxSBd/u8gWJTp4JM5+hV6a5FAwZ0BpmxtA4uo5oJqe4fTuQvGtRw7uDR/+C5XxQtozlO98AJ0bZNMx5LUMCGTZmdYXB06AtGGw3+3jfm85KoxV88oO6UAhae6Q8olQ+ZgYzqe+HphuCXFTA+vGJYDILuq6t1if0S3jAtn44UMIoD5ZnTcXoXxM5C2rQW64R95KQDAPpHHCMXct5dMN2WtJEqIg3j8i5oLNb0IzDSNUmp4G3Rz57Se3w0sU0MgIg/thaxCx8zgz/1qSW24vTOXkARWx3pBV7uU4hX5vip1PyNCn6IBQs0Faj9ifdl5k9YWofTM+OjOVtH8BQ+bPilMo6txz0KKSxk2Cq0xvnqxPKF34vZ8lBIBxnUPgllzyfl8aruCM1xEgUMKnL2xVpDZ/blCAuIHLcBQAFPqduLvVoU31wXsLXxZJRSdncB3CI+Mx2feUvxYfORoyXV6iTZJlvGaOL30cbcMChyRdOuAl/obd2svmwdthL5pedTYzdNUaVRFHlPFwCdSXx6T9A1C5n/hNlEjq0B0MpV+6jlmYaXl6V/K/nQ/yQ/zxsS1rX7+1vyo21kitnU1uHUYui7/dSnfJc/6yJKy3/BFIYKWcXPl47BTRgvLY6Ap+gFC+Irjeku7L0gjRPM8Fhwyf+rFm37vO/WI="
 script:
-  - if [ "${TRAVIS_NODE_VERSION}" == "4" ]; then xvfb-run wct; fi
+  - xvfb-run wct
   - istanbul cover ./node_modules/mocha/bin/_mocha test/test.js --report lcov -- -R spec
   - lcov-result-merger 'coverage*/lcov.info' | ./node_modules/coveralls/bin/coveralls.js
