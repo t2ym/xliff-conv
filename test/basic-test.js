@@ -958,7 +958,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
         }, function (output) {
           assert.equal(
             output
-              // patch output without affecting XML semactics
+              // patch output without affecting XML semantics
               .replace('<file product-name="messages" date="1970-01-01T00:00:00Z" original="messages" datatype="plaintext" target-language="de" source-language="en" xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:space="default">',
                        '<file xml:space="default" source-language="en" target-language="de" datatype="plaintext" original="messages" date="1970-01-01T00:00:00Z" product-name="messages">')
               .replace('<file xml:space="default" xmlns:xml="http://www.w3.org/XML/1998/namespace" source-language="en" target-language="de" datatype="plaintext" original="messages" date="1970-01-01T00:00:00Z" product-name="messages">',
