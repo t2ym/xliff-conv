@@ -74,59 +74,67 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
   };
 
   XliffConv.prototype._todoOps = function (xliffStates) {
-    var output = {};
+    var output = { expressions: {} };
+    var match;
     for (var op in xliffStates) {
       for (var i in xliffStates[op]) {
-        output[xliffStates[op][i]] = output[xliffStates[op][i]] || [];
-        output[xliffStates[op][i]].push(op);
+        match = xliffStates[op][i].match(/^\[(.*)\]$/);
+        if (match) {
+          output.expressions[match[1]] = output.expressions[match[1]] || [];
+          output.expressions[match[1]].push(op);
+        }
+        else {
+          output[xliffStates[op][i]] = output[xliffStates[op][i]] || [];
+          output[xliffStates[op][i]].push(op);
+        }
       }
     }
     return output;
   };
 
   XliffConv.prototype._resolveTodoOps = function (parameters) {
-    var result = this.todoOps[''][0];
+    var result;
     var match;
-    if (parameters.state &&
-        this.todoOps[parameters.state] &&
-        this.todoOps[parameters.state][0]) {
-      result = this.todoOps[parameters.state][0];
-    }
-    else {
-      for (var prop in this.todoOps) {
-        match = prop.match(/^\[(.*)\]$/);
+    for (var prop in this.todoOps.expressions) {
+      if (prop.split(/&&/).map(function (expression) {
+        match = expression.match(/^([\-\w]*)$/);
         if (match) {
-          if (match[1].split(/&&/).map(function (expression) {
-            match = expression.match(/^([\-\w]*)$/);
-            if (match) {
-              // non-null
-              return !!parameters[match[1]];
-            }
-            match = expression.match(/^!([\-\w]*)$/);
-            if (match) {
-              // negation
-              return !parameters[match[1]];
-            }
-            match = expression.match(/^([\-\w]*)==([\-\w]*)$/);
-            if (match) {
-              // equality
-              return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) ===
-                     (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
-            }
-            match = expression.match(/^([\-\w]*)!=([\-\w]*)$/);
-            if (match) {
-              // unequality
-              return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) !==
-                     (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
-            }
-            return false;
-          }).reduce(function (previous, current) {
-            return previous && current;
-          }, true)) { // Expression matched
-            result = this.todoOps[prop][0];
-            break;
-          }
+          // non-null
+          return !!parameters[match[1]];
         }
+        match = expression.match(/^!([\-\w]*)$/);
+        if (match) {
+          // negation
+          return !parameters[match[1]];
+        }
+        match = expression.match(/^([\-\w]*)==([\-\w]*)$/);
+        if (match) {
+          // equality
+          return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) ===
+                 (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
+        }
+        match = expression.match(/^([\-\w]*)!=([\-\w]*)$/);
+        if (match) {
+          // unequality
+          return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) !==
+                 (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
+        }
+        return false;
+      }).reduce(function (previous, current) {
+        return previous && current;
+      }, true)) { // Expression matched
+        result = this.todoOps.expressions[prop][0];
+        break;
+      }
+    }
+    if (!result) {
+      if (parameters.state &&
+          this.todoOps[parameters.state] &&
+          this.todoOps[parameters.state][0]) {
+        result = this.todoOps[parameters.state][0];
+      }
+      else {
+        result = this.todoOps[''][0];
       }
     }
     return result;
