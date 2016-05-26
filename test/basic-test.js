@@ -581,7 +581,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_2">\n' +
       '        <source>Copyright (c) 2015 The Polymer Authors. All rights reserved.</source>\n' +
-      '        <target state="needs-translation">Copyright (c) 2015 The Polymer Authors. All rights reserved.</target>\n' +
+      '        <target state="invalid-state">Copyright (c) 2015 The Polymer Authors. All rights reserved.</target>\n' +
       '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_3" approved="yes">\n' +
       '        <source>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</source>\n' +
