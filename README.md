@@ -164,6 +164,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 
 - date: Date, default: new Date() - date attribute value for XLIFF
 - xliffStates: Object, default: XliffConv.xliffStates.default - todo.op to XLIFF state mapping table
+- patterns: Object, default: XliffConv.patterns - A set of named regular expressions for pattern matching
 - logger: Function, default: console.log - information logger
 - warnLogger: Function, default: console.warn - warning logger
 - errorLogger: Function, default: console.error - error logger
@@ -178,6 +179,20 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
       'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[approved]' ]
+    },
+    // Aannotations {{name}} and tags <tag-name> are regarded as translated
+    'annotationsAsTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]', '[source~=annotationsAndTags]' ]
+    },
+    // Newly added annotations {{name}} and tags <tag-name> are regarded as translated
+    'newAnnotationsAsTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]', '[state==new&&source~=annotationsAndTags]' ]
     },
     /* === State Mapping Tables for migration from xliff2bundlejson === */
     // All state-less strings are regarded as approved=yes
@@ -202,6 +217,17 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
       'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
   }
+```
+
+#### `XliffConv.patterns` object - predefined named regular expressions for `options.patterns`
+
+```javascript
+  XliffConv.patterns = {
+    'annotationsAndTags': /^({{[^{} ]*}}|\[\[[^\[\] ]*\]\]|<[-a-zA-Z]{1,}>)$/,
+    'annotations': /^({{[^{} ]*}}|\[\[[^\[\] ]*\]\])$/,
+    'numbers': /^[0-9.]{1,}$/,
+    'tags': /^<[-a-zA-Z]{1,}>$/
+  };
 ```
 
 ### `xliffConv.parseXliff(xliff, options, callback)` method
