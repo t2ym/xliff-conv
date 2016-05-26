@@ -34,6 +34,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     this.DOMParser = this.xmldom.DOMParser;
     this.XMLSerializer = this.xmldom.XMLSerializer;
     this.xliffStates = options.xliffStates || XliffConv.xliffStates.default;
+    this.patterns = options.patterns || XliffConv.patterns;
     this.todoOps = this._todoOps(this.xliffStates);
     this.logger = options.logger || console.log;
     this.warnLogger = options.warnLogger || console.warn;
@@ -48,6 +49,20 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[approved]' ]
+    },
+    // Aannotations {{name}} and tags <tag-name> are regarded as translated
+    'annotationsAsTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]', '[source~=annotationsAndTags]' ]
+    },
+    // Newly added annotations {{name}} and tags <tag-name> are regarded as translated
+    'newAnnotationsAsTranslated': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]', '[state==new&&source~=annotationsAndTags]' ]
     },
     /* === State Mapping Tables for migration from xliff2bundlejson === */
     // All state-less strings are regarded as approved=yes
@@ -71,6 +86,13 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
+  };
+
+  XliffConv.patterns = {
+    'annotationsAndTags': /^({{[^{} ]*}}|\[\[[^\[\] ]*\]\]|<[-a-zA-Z]{1,}>)$/,
+    'annotations': /^({{[^{} ]*}}|\[\[[^\[\] ]*\]\])$/,
+    'numbers': /^[0-9.]{1,}$/,
+    'tags': /^<[-a-zA-Z]{1,}>$/
   };
 
   XliffConv.prototype._todoOps = function (xliffStates) {
@@ -118,6 +140,12 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           // unequality
           return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) !==
                  (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
+        }
+        match = expression.match(/^([\-\w]*)~=([\-\w]*)$/);
+        if (match) {
+          // pattern matching
+          return !!(parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1])
+                   .match(parameters.patterns.hasOwnProperty(match[2]) ? parameters.patterns[match[2]] : match[2]);
         }
         return false;
       }).reduce(function (previous, current) {
@@ -263,7 +291,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 'restype'  : restype,
                 'source'   : source,
                 'target'   : target,
-                'approved' : approved // Boolean
+                'approved' : approved, // Boolean
+                'patterns' : this.patterns
               });
               if (op === 'default') {
                 // no todo for approved item
