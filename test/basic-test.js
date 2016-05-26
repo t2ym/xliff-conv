@@ -101,7 +101,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
         },
         "model": {},
         "label_2": "Update text to change the greeting.",
-        "welcome": "Welcome!"
+        "welcome": ""
       },
       "my-list": {
         "meta": {
