@@ -645,9 +645,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '        <source>This is {1}\'s section</source>\n' +
       '        <target state="translated">de This is {1}\'s section</target>\n' +
       '      </trans-unit>\n' +
-      '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.1" approved="yes">\n' +
+      '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.1">\n' +
       '        <source>{{params.name}}</source>\n' +
-      '        <target state="translated">{{params.name}}</target>\n' +
+      '        <target state="new">{{params.name}}</target>\n' +
       '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_3:paper-material:h1" approved="yes">\n' +
       '        <source>Contact</source>\n' +
@@ -937,7 +937,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           'add'    : [ 'new' ],
           'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '[invalid===expression]', '[!state&&!approved&&source==target]', '' ],
           'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n', '[!state&&!approved&&source!=target]' ],
-          'default': [ 'translated', 'signed-off', 'final', '[approved]' ]
+          'default': [ 'translated', 'signed-off', 'final', '[approved]', '[state==new&&source~=annotationsAndTags]' ]
         }
       });
 
