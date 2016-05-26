@@ -184,7 +184,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       }
       while (paths.length > 0) {
         if (paths.length === 1) {
-          if (cursor[paths[0]]) {
+          if (cursor.hasOwnProperty(paths[0])) {
             parsed = target.match(/^_\$([a-zA-Z]*)\$_(.*)$/);
             if (parsed) {
               // process _$type$_value format for compatibility with xliff2bundlejson 
