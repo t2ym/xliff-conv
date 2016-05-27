@@ -243,7 +243,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 
       Predefined parameters: Undefined parameters are treated as strings for matching
         state
-          - state attribute of trans-unit
+          - state attribute of target
         id
           - id attribute of trans-unit
         component

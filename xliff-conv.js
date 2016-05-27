@@ -113,7 +113,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
 
       Predefined parameters: Undefined parameters are treated as strings for matching
         state
-          - state attribute of trans-unit
+          - state attribute of target
         id
           - id attribute of trans-unit
         component
