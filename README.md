@@ -194,6 +194,13 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[approved]', '[state==new&&source~=annotationsAndTags]' ]
     },
+    // Newly added annotations {{name}} and tags <tag-name> are regarded as translated only at export
+    'newAnnotationsAsTranslatedAtExport': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]', '[export&&state==new&&source~=annotationsAndTags]' ]
+    },
     /* === State Mapping Tables for migration from xliff2bundlejson === */
     // All state-less strings are regarded as approved=yes
     'approveAll': {
@@ -216,6 +223,43 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
+    /*
+      Expression format: [condition1&&condition2&&...]
+        - expression is true when all the conditions are true
+
+      Operators for conditions:
+        parameter
+          - true if parameter is non-null
+        !parameter
+          - true if parameter is undefined, null, or ''
+        parameter1==parameter2
+          - true if parameter1 is equal to parameter2
+        parameter1!=parameter2
+          - true if parameter1 is not equal to parameter2
+        parameter~=pattern
+          - true if parameter matches the regular expression options.patterns.pattern
+          - if options.patterns.pattern is undefined, pattern is treated as the matching string
+
+      Predefined parameters: Undefined parameters are treated as strings for matching
+        state
+          - state attribute of trans-unit
+        id
+          - id attribute of trans-unit
+        component
+          - component name in id
+        restype
+          - restype attribute of trans-unit. 'x-json-string' for strings
+        source
+          - text content of source tag
+        target
+          - text content of target tag
+        approved
+          - true if approved attribute of trans-unit is 'yes'
+        import
+          - true on XLIFF import (parseXliff); false on XLIFF export (parseJSON)
+        export
+          - true on XLIFF export (parseJSON); false on XLIFF import (parseXliff)
+     */
   }
 ```
 
