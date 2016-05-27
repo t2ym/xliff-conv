@@ -332,6 +332,16 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     	          "path": "/paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_2:span_1",
     	          "value": "Contact"
     	        },
+              {
+                "op": "add",
+                "path": "/mainToolbar:div_2:div",
+                "value": "{{autotranslated}}"
+              },
+              {
+                "op": "add",
+                "path": "/mainToolbar:div_3:div",
+                "value": "The future of the web today"
+              },
     	        {
     	          "op": "replace",
     	          "path": "/headerPanelMain:div_1:iron-pages:section_1:paper-material:a_2",
@@ -359,7 +369,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     	    "paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a:span_1": "de Home",
     	    "paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_1:span_1": "de Users",
     	    "paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_2:span_1": "Contact",
-    	    "mainToolbar:div_2:div": "de Polymer Starter Kit",
+    	    "mainToolbar:div_2:div": "{{autotranslated}}",
     	    "mainToolbar:div_3:div": "de The future of the web today",
     	    "headerPanelMain:div_1:iron-pages:section:paper-material:p_1": "de You now have:",
     	    "headerPanelMain:div_1:iron-pages:section:paper-material:p_3": [
@@ -459,7 +469,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           "paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a:span_1": "Home",
           "paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_1:span_1": "Users",
           "paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_2:span_1": "Contact",
-          "mainToolbar:div_2:div": "Polymer Starter Kit",
+          "mainToolbar:div_2:div": "{{autotranslated}}",
           "mainToolbar:div_3:div": "The future of the web today",
           "headerPanelMain:div_1:iron-pages:section:paper-material:p_1": "You now have:",
           "headerPanelMain:div_1:iron-pages:section:paper-material:p_3": [
@@ -743,12 +753,12 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '        <target state="needs-translation">Contact</target>\n' +
       '      </trans-unit>\n' +
       '      <trans-unit id="app.mainToolbar:div_2:div" approved="yes">\n' +
-      '        <source>Polymer Starter Kit</source>\n' +
-      '        <target state="translated">de Polymer Starter Kit</target>\n' +
+      '        <source>{{autotranslated}}</source>\n' +
+      '        <target state="translated">{{autotranslated}}</target>\n' +
       '      </trans-unit>\n' +
-      '      <trans-unit id="app.mainToolbar:div_3:div" approved="yes">\n' +
+      '      <trans-unit id="app.mainToolbar:div_3:div">\n' +
       '        <source>The future of the web today</source>\n' +
-      '        <target state="translated">de The future of the web today</target>\n' +
+      '        <target state="new">de The future of the web today</target>\n' +
       '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section:paper-material:p_1" approved="yes">\n' +
       '        <source>You now have:</source>\n' +
