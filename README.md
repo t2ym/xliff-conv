@@ -224,8 +224,9 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
       'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
     /*
-      Expression format: [condition1&&condition2&&...]
-        - expression is true when all the conditions are true
+      Expression format:
+        [condition1&&condition2&&...]
+          - expression is true when all the conditions are true
 
       Operators for conditions:
         parameter

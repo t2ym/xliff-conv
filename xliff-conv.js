@@ -94,8 +94,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
     /*
-      Expression format: [condition1&&condition2&&...]
-        - expression is true when all the conditions are true
+      Expression format:
+        [condition1&&condition2&&...]
+          - expression is true when all the conditions are true
 
       Operators for conditions:
         parameter
