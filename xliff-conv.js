@@ -64,6 +64,13 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[approved]', '[state==new&&source~=annotationsAndTags]' ]
     },
+    // Newly added annotations {{name}} and tags <tag-name> are regarded as translated only at export
+    'newAnnotationsAsTranslatedAtExport': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[approved]', '[export&&state==new&&source~=annotationsAndTags]' ]
+    },
     /* === State Mapping Tables for migration from xliff2bundlejson === */
     // All state-less strings are regarded as approved=yes
     'approveAll': {
@@ -86,6 +93,43 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[!state&&!approved&&source!=target]', '[approved]' ]
     }
+    /*
+      Expression format: [condition1&&condition2&&...]
+        - expression is true when all the conditions are true
+
+      Operators for conditions:
+        parameter
+          - true if parameter is non-null
+        !parameter
+          - true if parameter is undefined, null, or ''
+        parameter1==parameter2
+          - true if parameter1 is equal to parameter2
+        parameter1!=parameter2
+          - true if parameter1 is not equal to parameter2
+        parameter~=pattern
+          - true if parameter matches the regular expression options.patterns.pattern
+          - if options.patterns.pattern is undefined, pattern is treated as the matching string
+
+      Predefined parameters: Undefined parameters are treated as strings for matching
+        state
+          - state attribute of trans-unit
+        id
+          - id attribute of trans-unit
+        component
+          - component name in id
+        restype
+          - restype attribute of trans-unit. 'x-json-string' for strings
+        source
+          - text content of source tag
+        target
+          - text content of target tag
+        approved
+          - true if approved attribute of trans-unit is 'yes'
+        import
+          - true on XLIFF import (parseXliff); false on XLIFF export (parseJSON)
+        export
+          - true on XLIFF export (parseJSON); false on XLIFF import (parseXliff)
+     */
   };
 
   XliffConv.patterns = {
@@ -292,7 +336,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 'source'   : source,
                 'target'   : target,
                 'approved' : approved, // Boolean
-                'patterns' : this.patterns
+                'patterns' : this.patterns,
+                'import'   : true,
+                'export'   : false
               });
               if (op === 'default') {
                 // no todo for approved item
@@ -414,26 +460,33 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           var sourceTag = transUnit.getElementsByTagName('source')[0];
           var targetTag = transUnit.getElementsByTagName('target')[0];
           var todo = todoMap[id];
-          var state;
+          var op;
+          var state = todo && this.xliffStates[todo.op] ? this.xliffStates[todo.op][0] : this.xliffStates.default[0];
+          var restype = 'x-json-' + typeof source;
           transUnit.setAttribute('id', component + '.' + id);
-          if (typeof source !== 'string') {
-            transUnit.setAttribute('restype', 'x-json-' + typeof source);
-          }
-          if (todo) {
-            if (this.xliffStates[todo.op]) {
-              state = this.xliffStates[todo.op][0];
-            }
-            else {
-              transUnit.setAttribute('approved', 'yes');
-              state = this.xliffStates.default[0];
-            }
-          }
-          else {
-            transUnit.setAttribute('approved', 'yes');
-            state = this.xliffStates.default[0];
+          if (restype !== 'x-json-string') {
+            transUnit.setAttribute('restype', restype);
           }
           sourceTag.textContent = this._stringify(source);
           targetTag.textContent = this._stringify(target);
+          // apply expressions
+          op = this._resolveTodoOps({
+            'state'    : state,
+            'id'       : component + '.' + id,
+            'component': component,
+            'restype'  : restype,
+            'source'   : sourceTag.textContent,
+            'target'   : targetTag.textContent,
+            'approved' : state === this.xliffStates.default[0], // Boolean
+            'patterns' : this.patterns,
+            'import'   : false,
+            'export'   : true
+          });
+          // update state
+          state = this.xliffStates[op][0];
+          if (op === 'default') {
+            transUnit.setAttribute('approved', 'yes');
+          }
           targetTag.setAttribute('state', state);
           var nodes = Array.prototype.map.call(transUnitWrapper.getElementsByTagName('wrapper')[0].childNodes, function (node) {
             return node;
