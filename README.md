@@ -201,6 +201,13 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[approved]', '[export&&state==new&&source~=annotationsAndTags]' ]
     },
+    // Annotations {{name}} and tags <tag-name> are skipped in translation by translate=no
+    'annotationsAsNoTranslate': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[source~=annotationsAndTags&&translate:=no&&state:=final]', '[approved]' ],
+    },
     /* === State Mapping Tables for migration from xliff2bundlejson === */
     // All state-less strings are regarded as approved=yes
     'approveAll': {
@@ -225,8 +232,9 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
     }
     /*
       Expression format:
-        [condition1&&condition2&&...]
+        [condition1&&condition2&&...&&effect1&&effect2&&...]
           - expression is true when all the conditions are true
+          - optional effects are processed if the expression is true
 
       Operators for conditions:
         parameter
@@ -240,6 +248,17 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
         parameter~=pattern
           - true if parameter matches the regular expression options.patterns.pattern
           - if options.patterns.pattern is undefined, pattern is treated as the matching string
+        tag.attribute~=pattern
+          - true if attribute value of tag matched the regular expression options.patterns.pattern
+          - if options.patterns.pattern is undefined, pattern is treated as the matching string
+
+      Operators for effects:
+        tag.attribute:=value
+          - assign attribute of tag with the string value
+        attribute:=value
+          - assign predefined alias attribute with the string value
+        tag:=value
+          - assign textContent of tag with the string value
 
       Predefined parameters: Undefined parameters are treated as strings for matching
         state
@@ -260,8 +279,26 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
           - true on XLIFF import (parseXliff); false on XLIFF export (parseJSON)
         export
           - true on XLIFF export (parseJSON); false on XLIFF import (parseXliff)
+
+      Predefined tags:
+        file
+          - file tag
+        trans-unit
+          - trans-unit tag
+        source
+          - source tag
+        target
+          - target tag
+
+      Predefined alias attributes:
+        translate
+          - alias for trans-unit.translate
+        approved
+          - alias for trans-unit.approved
+        state
+          - alias for target.state
      */
-  }
+  };
 ```
 
 #### `XliffConv.patterns` object - predefined named regular expressions for `options.patterns`
