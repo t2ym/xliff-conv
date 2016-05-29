@@ -71,6 +71,13 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
       'default': [ 'translated', 'signed-off', 'final', '[approved]', '[export&&state==new&&source~=annotationsAndTags]' ]
     },
+    // Annotations {{name}} and tags <tag-name> are skipped in translation by translate=no
+    'annotationsAsNoTranslate': {
+      'add'    : [ 'new' ],
+      'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '' ],
+      'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n' ],
+      'default': [ 'translated', 'signed-off', 'final', '[source~=annotationsAndTags&&translate:=no&&state:=final]', '[approved]' ],
+    },
     /* === State Mapping Tables for migration from xliff2bundlejson === */
     // All state-less strings are regarded as approved=yes
     'approveAll': {
@@ -95,8 +102,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     }
     /*
       Expression format:
-        [condition1&&condition2&&...]
+        [condition1&&condition2&&...&&effect1&&effect2&&...]
           - expression is true when all the conditions are true
+          - optional effects are processed if the expression is true
 
       Operators for conditions:
         parameter
@@ -110,6 +118,17 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
         parameter~=pattern
           - true if parameter matches the regular expression options.patterns.pattern
           - if options.patterns.pattern is undefined, pattern is treated as the matching string
+        tag.attribute~=pattern
+          - true if attribute value of tag matched the regular expression options.patterns.pattern
+          - if options.patterns.pattern is undefined, pattern is treated as the matching string
+
+      Operators for effects:
+        tag.attribute:=value
+          - assign attribute of tag with the string value
+        attribute:=value
+          - assign predefined alias attribute with the string value
+        tag:=value
+          - assign textContent of tag with the string value
 
       Predefined parameters: Undefined parameters are treated as strings for matching
         state
@@ -130,6 +149,24 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           - true on XLIFF import (parseXliff); false on XLIFF export (parseJSON)
         export
           - true on XLIFF export (parseJSON); false on XLIFF import (parseXliff)
+
+      Predefined tags:
+        file
+          - file tag
+        trans-unit
+          - trans-unit tag
+        source
+          - source tag
+        target
+          - target tag
+
+      Predefined alias attributes:
+        translate
+          - alias for trans-unit.translate
+        approved
+          - alias for trans-unit.approved
+        state
+          - alias for target.state
      */
   };
 
@@ -162,7 +199,10 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
   XliffConv.prototype._resolveTodoOps = function (parameters) {
     var result;
     var match;
+    var effects;
+    var effect;
     for (var prop in this.todoOps.expressions) {
+      effects = [];
       if (prop.split(/&&/).map(function (expression) {
         match = expression.match(/^([\-\w]*)$/);
         if (match) {
@@ -186,17 +226,60 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           return (parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1]) !==
                  (parameters.hasOwnProperty(match[2]) ? parameters[match[2]] : match[2]);
         }
-        match = expression.match(/^([\-\w]*)~=([\-\w]*)$/);
+        match = expression.match(/^([\-\w]*)([.][\-\w]*)?~=([\-\w]*)$/);
         if (match) {
           // pattern matching
-          return !!(parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1])
-                   .match(parameters.patterns.hasOwnProperty(match[2]) ? parameters.patterns[match[2]] : match[2]);
+          if (!match[2]) {
+            return !!(parameters.hasOwnProperty(match[1]) ? parameters[match[1]] : match[1])
+                     .match(parameters.patterns.hasOwnProperty(match[3]) ? parameters.patterns[match[3]] : match[3]);
+          }
+          else {
+            return !!(typeof parameters.tags[match[1]] === 'object' ? parameters.tags[match[1]].getAttribute(match[2].substr(1)) : match[1])
+                     .match(parameters.patterns.hasOwnProperty(match[3]) ? parameters.patterns[match[3]] : match[3]);
+          }
+        }
+        match = expression.match(/^([\-\w]*)([.][\-\w]*)?:=([^&]*)$/);
+        if (match) {
+          // assignment effect
+          if (!match[2]) {
+            if (typeof parameters.tags[match[1]] === 'string') {
+              // alias
+              effect = parameters.tags[match[1]].split(/[.]/);
+              effect.push(match[3]);
+              effects.push(effect);
+            }
+            else if (typeof parameters.tags[match[1]] === 'object') {
+              // tag
+              effects.push([ match[1], 'textContent', match[3] ])
+            }
+            else {
+              this.warnLogger('XliffConv: id = ' + parameters.id + ' effect ' + expression + ' is ignored due to inexistent tag ' + match[1]);
+            }
+          }
+          else {
+            if (typeof parameters.tags[match[1]] === 'object') {
+              // attribute
+              effects.push([ match[1], match[2].substr(1), match[3] ])
+            }
+            else {
+              this.warnLogger('XliffConv: id = ' + parameters.id + ' effect ' + expression + ' is ignored due to inexistent tag ' + match[1]);
+            }
+          }
+          return true;
         }
         return false;
-      }).reduce(function (previous, current) {
+      }, this).reduce(function (previous, current) {
         return previous && current;
       }, true)) { // Expression matched
         result = this.todoOps.expressions[prop][0];
+        effects.forEach(function (effect) {
+          if (effect[1] === 'textContent') {
+            parameters.tags[effect[0]].textContent = effect[2];
+          }
+          else {
+            parameters.tags[effect[0]].setAttribute(effect[1], effect[2]);
+          }
+        });
         break;
       }
     }
@@ -225,7 +308,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     }
     var parser = new (this.DOMParser)();
     var dom = parser.parseFromString(xliff, 'application/xml');
-    //var fileTag = dom.getElementsByTagName('file')[0];
+    var fileTag = dom.getElementsByTagName('file')[0];
     var transUnits = dom.getElementsByTagName('trans-unit');
     var output = options.bundle;
     var todoMap = {};
@@ -338,6 +421,15 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 'target'   : target,
                 'approved' : approved, // Boolean
                 'patterns' : this.patterns,
+                'tags'     : {
+                  'file'      : fileTag,
+                  'trans-unit': transUnit,
+                  'source'    : sourceTag,
+                  'target'    : targetTag,
+                  'state'     : 'target.state',
+                  'translate' : 'trans-unit.translate',
+                  'approved'  : 'trans-unit.approved'
+                },
                 'import'   : true,
                 'export'   : false
               });
@@ -439,6 +531,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '</wrapper>';
     var spacer = '<wrapper>    </wrapper>';
     var xliff = parser.parseFromString(xliffTemplate, 'application/xml');
+    var fileTag = xliff.getElementsByTagName('file')[0];
     var bodyTag = xliff.getElementsByTagName('body')[0];
     var sourceBundle = bundles[''];
     var targetBundle = bundles[options.destLanguage];
@@ -480,15 +573,26 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             'target'   : targetTag.textContent,
             'approved' : state === this.xliffStates.default[0], // Boolean
             'patterns' : this.patterns,
+            'tags'     : {
+              'file'      : fileTag,
+              'trans-unit': transUnit,
+              'source'    : sourceTag,
+              'target'    : targetTag,
+              'state'     : 'target.state',
+              'translate' : 'trans-unit.translate',
+              'approved'  : 'trans-unit.approved'
+            },
             'import'   : false,
             'export'   : true
           });
           // update state
           state = this.xliffStates[op][0];
-          if (op === 'default') {
+          if (op === 'default' && !transUnit.hasAttribute('approved')) {
             transUnit.setAttribute('approved', 'yes');
           }
-          targetTag.setAttribute('state', state);
+          if (!targetTag.hasAttribute('state')) {
+            targetTag.setAttribute('state', state);
+          }
           var nodes = Array.prototype.map.call(transUnitWrapper.getElementsByTagName('wrapper')[0].childNodes, function (node) {
             return node;
           });
