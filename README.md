@@ -4,7 +4,7 @@
 [![Bower](https://img.shields.io/bower/v/xliff-conv.svg)](https://customelements.io/t2ym/xliff-conv/)
 # xliff-conv
 
-XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym/i18n-behavior) (work in progress)
+XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym/i18n-behavior)
 
 ## Features
 
@@ -12,12 +12,9 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 - Generate XLIFF from bundles
 - Map todo operations in bundles onto XLIFF states
 - Update todo operations in bundles with XLIFF states
+- Concise and flexible expressions to customize conversion
 - Handy migration from [xliff2bundlejson](https://github.com/t2ym/xliff2bundlejson)
 - [UMD](https://github.com/ruyadorno/generator-umd) support
-
-## TODOs
-
-- Test suites on browsers
 
 ## Install
 
@@ -321,8 +318,8 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 ### `xliffConv.parseJSON(bundles, options, callback)` method
 
 - bundles: Object, bundles object
-- options.srcLanguage: String, default: 'en' - source language
-- options.destLanguage: String, default: 'fr' - target language
+- options.srcLanguage: String, default: 'en' - `<file source-language>` attribute
+- options.destLanguage: String, default: 'fr' - `<file target-language>` attribute
 - options.xmlSpace: String, default: 'default' - `<file xml:space>` attribute
 - options.dataType: String, default: 'plaintext' - `<file datatype>` attribute
 - options.original: String, default: 'messages' - `<file original>` attribute
