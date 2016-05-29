@@ -89,7 +89,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
         ],
         "headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1": [
           "This is {1}'s section",
-          "{{params.name}}"
+          "{{params.name}}",
+          "<a>"
         ],
         "headerPanelMain:div_1:iron-pages:section_3:paper-material:h1": "Contact",
         "headerPanelMain:div_1:iron-pages:section_3:paper-material:p_1": "This is the contact section",
@@ -238,7 +239,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
         ],
         "headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1": [
           "de This is {1}'s section",
-          "{{params.name}}"
+          "{{params.name}}",
+          "<a>"
         ],
         "headerPanelMain:div_1:iron-pages:section_3:paper-material:h1": "de Contact",
         "headerPanelMain:div_1:iron-pages:section_3:paper-material:p_1": "de This is the contact section",
@@ -398,7 +400,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     	    ],
     	    "headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1": [
     	      "de This is {1}'s section",
-    	      "{{params.name}}"
+    	      "{{params.name}}",
+            "<a>"
     	    ],
     	    "headerPanelMain:div_1:iron-pages:section_3:paper-material:h1": "de Contact",
     	    "headerPanelMain:div_1:iron-pages:section_3:paper-material:p_1": "de This is the contact section",
@@ -498,7 +501,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           ],
           "headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1": [
             "This is {1}'s section",
-            "{{params.name}}"
+            "{{params.name}}",
+            "<a>"
           ],
           "headerPanelMain:div_1:iron-pages:section_3:paper-material:h1": "Contact",
           "headerPanelMain:div_1:iron-pages:section_3:paper-material:p_1": "This is the contact section",
@@ -658,6 +662,10 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.1">\n' +
       '        <source>{{params.name}}</source>\n' +
       '        <target state="new">{{params.name}}</target>\n' +
+      '      </trans-unit>\n' +
+      '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.2" approved="yes">\n' +
+      '        <source>&lt;a&gt;</source>\n' +
+      '        <target state="translated">&lt;a&gt;</target>\n' +
       '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_3:paper-material:h1" approved="yes">\n' +
       '        <source>Contact</source>\n' +
@@ -858,6 +866,10 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '        <source>{{params.name}}</source>\n' +
       '        <target state="translated">{{params.name}}</target>\n' +
       '      </trans-unit>\n' +
+      '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.2" translate="no" approved="yes">\n' +
+      '        <source>&lt;a&gt;</source>\n' +
+      '        <target state="final">replaced value</target>\n' +
+      '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_3:paper-material:h1" approved="yes">\n' +
       '        <source>Contact</source>\n' +
       '        <target state="translated">de Contact</target>\n' +
@@ -925,15 +937,88 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     var errorLogs = [];
     var logs_expected = [];
     var warnLogs_expected = [
+      'XliffConv: id = app.drawerToolbar:span effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.drawerToolbar:span effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a:span_1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a:span_1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_1:span_1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_1:span_1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_2:span_1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.paperDrawerPanel:paper-scroll-header-panel:paper-menu_1:a_2:span_1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.mainToolbar:div_2:div effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.mainToolbar:div_2:div effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.mainToolbar:div_3:div effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.mainToolbar:div_3:div effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_3.0 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_3.0 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_3.1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_3.1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_3.2 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material:p_3.2 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_1:p effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_1:p effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.license effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.license effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_2 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_2 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_3 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_3 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:ul_4:li effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:ul_4:li effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:ul_4:li_1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:ul_4:li_1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:ul_4:li_2 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:ul_4:li_2 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_5 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section:paper-material_2:p_5 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
       'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:h1 discarding value "undefined" as source "undefined" does not match with todo.value "no Users"',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:p_1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:p_1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_2 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_2 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_4 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_4 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_6 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_6 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_8 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_1:paper-material:a_8 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:h1.0 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:h1.0 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
       'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:h1.1 discarding value "{{params.name}}" as source "{{params.name}}" does not match with todo.value "X{{params.name}}"',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.0 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.0 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.2 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.2 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_3:paper-material:h1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_3:paper-material:h1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_3:paper-material:p_1 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.headerPanelMain:div_1:iron-pages:section_3:paper-material:p_1 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.toast:span effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = app.toast:span effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-greeting.label_2 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-greeting.label_2 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-greeting.welcome effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-greeting.welcome effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
       'XliffConv: id = my-greeting.inexstent is missing',
       'XliffConv: id = my-greeting.inexstent-object.inexistent is missing',
       'XliffConv: id = my-list.items.0 discarding value "[object Object]" as source "[object Object]" does not match with todo.value "Responsive Web App boilerplate"',
       'XliffConv: id = my-list.items.1 discarding value "[object Object]" as source "[object Object]" does not match with todo.value "Iron Elements and Paper Elements"',
+      'XliffConv: id = my-list.items.3 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-list.items.3 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
       'XliffConv: id = my-list.items.4 discarding value "undefined" as source "undefined" does not match with todo.value "Routing with Page.js"',
-      'XliffConv: id = my-list.items.8 discarding value "4" as source "3" does not match with todo.value "2"'
+      'XliffConv: id = my-list.items.5 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-list.items.5 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-list.items.6 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-list.items.6 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-list.items.7 effect inexistent:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-list.items.7 effect inexistent.attr:=value is ignored due to inexistent tag inexistent',
+      'XliffConv: id = my-list.items.8 discarding value "4" as source "3" does not match with todo.value "2"' 
     ];
+
     var errorLogs_expected = [];
 
     describe('xliff-conv basic-test', function () {
@@ -947,7 +1032,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           'add'    : [ 'new' ],
           'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '[invalid===expression]', '[!state&&!approved&&source==target]', '' ],
           'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n', '[!state&&!approved&&source!=target]' ],
-          'default': [ 'translated', 'signed-off', 'final', '[approved]', '[state==new&&source~=annotationsAndTags]' ]
+          'default': [ 'translated', 'signed-off', 'final', 
+                       '[source~=tags&&file.target-language~=de&&translate:=no&&target.state:=final&&target:=replaced value&&inexistent:=value&&inexistent.attr:=value]',
+                       '[state==new&&source~=annotations]', '[approved]' ]
         }
       });
 
@@ -974,7 +1061,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               .replace('<file xml:space="default" xmlns:xml="http://www.w3.org/XML/1998/namespace" source-language="en" target-language="de" datatype="plaintext" original="messages" date="1970-01-01T00:00:00Z" product-name="messages">',
                        '<file xml:space="default" source-language="en" target-language="de" datatype="plaintext" original="messages" date="1970-01-01T00:00:00Z" product-name="messages">')
               .replace('<tool tool-version="' + xliffConv.toolVersion + '" tool-name="xliff-conv" tool-id="xliff-conv" />',
-                       '<tool tool-id="xliff-conv" tool-name="xliff-conv" tool-version="' + xliffConv.toolVersion + '"/>'),
+                       '<tool tool-id="xliff-conv" tool-name="xliff-conv" tool-version="' + xliffConv.toolVersion + '"/>')
+              .replace(/approved="yes" translate="no"/g, 'translate="no" approved="yes"')
+              .replace(/&lt;a>/g, '&lt;a&gt;'),
             xliff_de_expected
               .replace(/tool-version="[.0-9]*"/g, 'tool-version="' + xliffConv.toolVersion + '"'),
             'XLIFF output');
