@@ -1,6 +1,6 @@
 {
   "name": "xliff-conv",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "description": "XLIFF to/from JSON converter for Polymer i18n-behavior",
   "scripts": {
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha test/test.js --report lcov -- -R spec && wct",
@@ -22,6 +22,8 @@
     "web-components",
     "i18n",
     "internationalization",
+    "l10n",
+    "localization",
     "gulp"
   ],
   "dependencies": {
