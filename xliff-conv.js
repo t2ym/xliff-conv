@@ -181,7 +181,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     var output = { expressions: {} };
     var match;
     for (var op in xliffStates) {
-      for (var i in xliffStates[op]) {
+      for (var i = 0; i < xliffStates[op].length; i++) {
         match = xliffStates[op][i].match(/^\[(.*)\]$/);
         if (match) {
           output.expressions[match[1]] = output.expressions[match[1]] || [];
