@@ -1,15 +1,18 @@
 {
   "plugins": {
     "local": {
-      "browsers": [
-        "firefox"
-      ]
+      "browsers": []
     },
     "sauce": {
       "disabled": false,
       "browsers": [
         {
           "browserName":  "Chrome",
+          "platform":     "Windows 10",
+          "version":      ""
+        },
+        {
+          "browserName":  "firefox",
           "platform":     "Windows 10",
           "version":      ""
         },
