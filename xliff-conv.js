@@ -542,6 +542,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
 
     for (component in targetBundle) {
       if (component !== 'bundle') {
+        targetBundle[component].meta = targetBundle[component].meta || {};
+        targetBundle[component].meta.todo = targetBundle[component].meta.todo || [];
         todos = targetBundle[component].meta.todo;
         todoMap = {};
         for (index = 0; index < todos.length; index++) {
