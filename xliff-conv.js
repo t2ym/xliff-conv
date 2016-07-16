@@ -36,9 +36,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     this.xliffStates = options.xliffStates || XliffConv.xliffStates.default;
     this.patterns = options.patterns || XliffConv.patterns;
     this.todoOps = this._todoOps(this.xliffStates);
-    this.logger = options.logger || console.log;
-    this.warnLogger = options.warnLogger || console.warn;
-    this.errorLogger = options.errorLogger || console.error;
+    this.logger = options.logger || function () { console.log.apply(console, arguments); };
+    this.warnLogger = options.warnLogger || function () { console.warn.apply(console, arguments); };
+    this.errorLogger = options.errorLogger || function () { console.error.apply(console, arguments); };
     this.toolVersion = '1.0.3';
   };
 
