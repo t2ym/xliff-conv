@@ -539,6 +539,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     var todos;
     var todoMap;
     var index;
+    var stats = { xliff: {}, json: {} };
 
     for (component in targetBundle) {
       if (component !== 'bundle') {
@@ -595,6 +596,23 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           if (!targetTag.hasAttribute('state')) {
             targetTag.setAttribute('state', state);
           }
+          // update stats
+          stats.xliff.total = stats.xliff.total || {};
+          stats.xliff.total.units = stats.xliff.total.units || 0;
+          stats.xliff.total.units++;
+          stats.xliff.total.states = stats.xliff.total.states || {};
+          stats.xliff.total.states[targetTag.getAttribute('state')] = stats.xliff.total.states[targetTag.getAttribute('state')] || 0;
+          stats.xliff.total.states[targetTag.getAttribute('state')]++;
+          stats.xliff.total.approved = stats.xliff.total.approved || 0;
+          stats.xliff.total.approved += (transUnit.getAttribute('approved') === 'yes' ? 1 : 0);
+          stats.xliff[component] = stats.xliff[component] || {};
+          stats.xliff[component].units = stats.xliff[component].units || 0;
+          stats.xliff[component].units++;
+          stats.xliff[component].states = stats.xliff[component].states || {};
+          stats.xliff[component].states[targetTag.getAttribute('state')] = stats.xliff[component].states[targetTag.getAttribute('state')] || 0;
+          stats.xliff[component].states[targetTag.getAttribute('state')]++;
+          stats.xliff[component].approved = stats.xliff[component].approved || 0;
+          stats.xliff[component].approved += (transUnit.getAttribute('approved') === 'yes' ? 1 : 0);
           var nodes = Array.prototype.map.call(transUnitWrapper.getElementsByTagName('wrapper')[0].childNodes, function (node) {
             return node;
           });
@@ -605,7 +623,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       }
     }
     bodyTag.appendChild(parser.parseFromString(spacer, 'application/xml').getElementsByTagName('wrapper')[0].firstChild);
-    callback(xmlHeader + serializer.serializeToString(xliff));
+    callback(xmlHeader + serializer.serializeToString(xliff), stats);
   };
 
   XliffConv.prototype._stringify = function (value) {
