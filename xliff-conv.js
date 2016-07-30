@@ -311,6 +311,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     var fileTag = dom.getElementsByTagName('file')[0];
     var transUnits = dom.getElementsByTagName('trans-unit');
     var output = options.bundle;
+    var stats = { xliff: {}, json: {} };
     var todoMap = {};
     var component;
     var i;
@@ -323,6 +324,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       }
     }
     //console.log('todoMap = ', todoMap);
+    stats.json.total = stats.json.total || {};
+    stats.xliff.total = stats.xliff.total || {};
     Array.prototype.forEach.call(transUnits, function (transUnit) {
       var sourceTag = transUnit.getElementsByTagName('source')[0];
       var targetTag = transUnit.getElementsByTagName('target')[0];
@@ -346,6 +349,23 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
         // process _$type$_value format for compatibility with xliff2bundlejson
         source = parsed[2];
       }
+      // update stats
+      stats.json[component] = stats.json[component] || {};
+      stats.xliff.total.units = stats.xliff.total.units || 0;
+      stats.xliff.total.units++;
+      stats.xliff.total.states = stats.xliff.total.states || {};
+      stats.xliff.total.states[state] = stats.xliff.total.states[state] || 0;
+      stats.xliff.total.states[state]++;
+      stats.xliff.total.approved = stats.xliff.total.approved || 0;
+      stats.xliff.total.approved += approved ? 1 : 0;
+      stats.xliff[component] = stats.xliff[component] || {};
+      stats.xliff[component].units = stats.xliff[component].units || 0;
+      stats.xliff[component].units++;
+      stats.xliff[component].states = stats.xliff[component].states || {};
+      stats.xliff[component].states[state] = stats.xliff[component].states[state] || 0;
+      stats.xliff[component].states[state]++;
+      stats.xliff[component].approved = stats.xliff[component].approved || 0;
+      stats.xliff[component].approved += approved ? 1 : 0;
       while (paths.length > 0) {
         if (paths.length === 1) {
           if (cursor.hasOwnProperty(paths[0])) {
@@ -411,6 +431,10 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               // no todo or source is matching with todo.value
               // update value
               cursor[paths[0]] = value;
+              stats.json.total.updated = stats.json.total.updated || 0;
+              stats.json.total.updated++;
+              stats.json[component].updated = stats.json[component].updated || 0;
+              stats.json[component].updated++;
               // map to todo.op
               op = this._resolveTodoOps({
                 'state'    : state,
@@ -461,12 +485,28 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
               // discard value
               this.warnLogger('XliffConv: id = ' + id + ' discarding value "' + value + '"' + 
                 ' as source \"' + sourceValue + '\" does not match with todo.value "' + todo.value + '"');
+              stats.json.total.discarded = stats.json.total.discarded || 0;
+              stats.json.total.discarded++;
+              stats.json.total.source_mismatching = stats.json.total.source_mismatching || 0;
+              stats.json.total.source_mismatching++;
+              stats.json[component].discarded = stats.json[component].discarded || 0;
+              stats.json[component].discarded++;
+              stats.json[component].source_mismatching = stats.json[component].source_mismatching || 0;
+              stats.json[component].source_mismatching++;
             }
             paths.shift();
           }
           else {
             // missing resource
             this.warnLogger('XliffConv: id = ' + id + ' is missing');
+            stats.json.total.discarded = stats.json.total.discarded || 0;
+            stats.json.total.discarded++;
+            stats.json.total.id_missing = stats.json.total.id_missing || 0;
+            stats.json.total.id_missing++;
+            stats.json[component].discarded = stats.json[component].discarded || 0;
+            stats.json[component].discarded++;
+            stats.json[component].id_missing = stats.json[component].id_missing || 0;
+            stats.json[component].id_missing++;
           }
           break;
         }
@@ -474,6 +514,14 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           if (!cursor[paths[0]]) {
             // missing resource
             this.warnLogger('XliffConv: id = ' + id + ' is missing');
+            stats.json.total.discarded = stats.json.total.discarded || 0;
+            stats.json.total.discarded++;
+            stats.json.total.id_missing = stats.json.total.id_missing || 0;
+            stats.json.total.id_missing++;
+            stats.json[component].discarded = stats.json[component].discarded || 0;
+            stats.json[component].discarded++;
+            stats.json[component].id_missing = stats.json[component].id_missing || 0;
+            stats.json[component].id_missing++;
             break;
           }
           cursor = cursor[paths.shift()];
@@ -487,11 +535,22 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             // remove the noop todo item
             output[component].meta.todo.splice(i, 1);
           }
+          else {
+            stats.json.total.todo = stats.json.total.todo || 0;
+            stats.json.total.todo++;
+            stats.json.total[output[component].meta.todo[i].op] = stats.json.total[output[component].meta.todo[i].op] || 0;
+            stats.json.total[output[component].meta.todo[i].op]++;
+            stats.json[component] = stats.json[component] || {};
+            stats.json[component].todo = stats.json[component].todo || 0;
+            stats.json[component].todo++;
+            stats.json[component][output[component].meta.todo[i].op] = stats.json[component][output[component].meta.todo[i].op] || 0;
+            stats.json[component][output[component].meta.todo[i].op]++;
+          }
         }
       }
     }
 
-    callback(output);
+    callback(output, stats);
   };
 
   XliffConv.prototype.parseJSON = function (bundles, options, callback) {
