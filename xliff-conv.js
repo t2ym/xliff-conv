@@ -326,6 +326,10 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     //console.log('todoMap = ', todoMap);
     stats.json.total = stats.json.total || {};
     stats.xliff.total = stats.xliff.total || {};
+    stats.xliff.file = {};
+    Array.prototype.forEach.call(fileTag.attributes, function (attribute) {
+      stats.xliff.file[attribute.name] = attribute.value;
+    });
     Array.prototype.forEach.call(transUnits, function (transUnit) {
       var sourceTag = transUnit.getElementsByTagName('source')[0];
       var targetTag = transUnit.getElementsByTagName('target')[0];
