@@ -434,7 +434,13 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 (typeof todo.value === 'boolean' && todo.value === sourceValue)) {
               // no todo or source is matching with todo.value
               // update value
-              cursor[paths[0]] = value;
+              if (cursor[paths[0]] !== value) {
+                cursor[paths[0]] = value;
+                stats.json.total.valueUpdated = stats.json.total.valueUpdated || 0;
+                stats.json.total.valueUpdated++;
+                stats.json[component].valueUpdated = stats.json[component].valueUpdated || 0;
+                stats.json[component].valueUpdated++;
+              }
               stats.json.total.updated = stats.json.total.updated || 0;
               stats.json.total.updated++;
               stats.json[component].updated = stats.json[component].updated || 0;
