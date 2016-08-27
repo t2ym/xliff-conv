@@ -467,16 +467,24 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                 'import'   : true,
                 'export'   : false
               });
+              stats.json.total.todoUpdated = stats.json.total.todoUpdated || 0;
+              stats.json[component].todoUpdated = stats.json[component].todoUpdated || 0;
               if (op === 'default') {
                 // no todo for approved item
                 if (todo) {
                   // mark the todo for removal
                   todo.op = 'noop';
+                  stats.json.total.todoUpdated++;
+                  stats.json[component].todoUpdated++;
                 }
               }
               else {
                 if (todo) {
-                  todo.op = op;
+                  if (todo.op !== op) {
+                    todo.op = op;
+                    stats.json.total.todoUpdated++;
+                    stats.json[component].todoUpdated++;
+                  }
                 }
                 else {
                   // Fix #1. Populate missing todo item.
@@ -488,6 +496,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
                   output[component].meta = output[component].meta || {};
                   output[component].meta.todo = output[component].meta.todo || [];
                   output[component].meta.todo.push(todo);
+                  stats.json.total.todoUpdated++;
+                  stats.json[component].todoUpdated++;
                 }
               }
             }
