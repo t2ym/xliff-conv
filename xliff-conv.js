@@ -672,7 +672,8 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           if (op === 'default' && !transUnit.hasAttribute('approved')) {
             transUnit.setAttribute('approved', 'yes');
           }
-          if (!targetTag.hasAttribute('state')) {
+          // Fix #24: don't force the 'state' attribute if no state
+          if (!targetTag.hasAttribute('state') && state) {
             targetTag.setAttribute('state', state);
           }
           // update stats
