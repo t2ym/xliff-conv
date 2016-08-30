@@ -582,10 +582,10 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
     });
     var parser = new (this.DOMParser)();
     var serializer = new (this.XMLSerializer)();
-    var xmlHeader =
+    var xmlHeader = options.xmlHeader ||
       '<?xml version="1.0" encoding="UTF-8"?>\n' +
       '<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">\n';
-    var xliffTemplate = 
+    var xliffTemplate = options.xliffTemplate ||
       '<xliff version="1.0">\n' +
       '  <file xml:space="' + (options.xmlSpace || 'default') + '" ' +
               'source-language="' + (options.srcLanguage || 'en') + '" ' +
@@ -602,12 +602,13 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '  </file>\n' +
       '</xliff>';
     var transUnitTemplate =
-      '<wrapper>' +
+      '<wrapper>' + (options.transUnitTemplate ||
       '      <trans-unit>\n' +
       '        <source></source>\n' +
       '        <target></target>\n' +
-      '      </trans-unit>\n' +
-      '</wrapper>';
+      '      </trans-unit>'
+      ) +
+      '\n</wrapper>';
     var spacer = '<wrapper>    </wrapper>';
     var xliff = parser.parseFromString(xliffTemplate, 'application/xml');
     var fileTag = xliff.getElementsByTagName('file')[0];
