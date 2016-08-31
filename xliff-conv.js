@@ -277,7 +277,12 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             parameters.tags[effect[0]].textContent = effect[2];
           }
           else {
-            parameters.tags[effect[0]].setAttribute(effect[1], effect[2]);
+            if (effect[2] && effect[2] !== '""') {
+              parameters.tags[effect[0]].setAttribute(effect[1], effect[2]);
+            }
+            else {
+              parameters.tags[effect[0]].removeAttribute(effect[1]);
+            }
           }
         });
         break;
@@ -674,8 +679,12 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             transUnit.setAttribute('approved', 'yes');
           }
           // Fix #24: don't force the 'state' attribute if no state
-          if (!targetTag.hasAttribute('state') && state) {
+          if (!targetTag.hasAttribute('state') && state && state !== '""') {
             targetTag.setAttribute('state', state);
+          }
+          // Fix #28: "" to remove the state attribute
+          if (!state || state === '""') {
+            targetTag.removeAttribute('state');
           }
           // update stats
           stats.xliff.total = stats.xliff.total || {};
