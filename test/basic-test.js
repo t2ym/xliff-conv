@@ -34,7 +34,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
         "meta": {
           "todo": [
             {
-              "op": "replace",
+              "op": "replacex",
               "path": "/headerPanelMain:div_1:iron-pages:section:paper-material_2:p_2",
               "value": "Copyright (c) 2015 The Polymer Authors. All rights reserved."
             },
@@ -868,7 +868,7 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
       '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_2:paper-material:div_1.2" translate="no" approved="yes">\n' +
       '        <source>&lt;a&gt;</source>\n' +
-      '        <target state="final">replaced value</target>\n' +
+      '        <target>replaced value</target>\n' +
       '      </trans-unit>\n' +
       '      <trans-unit id="app.headerPanelMain:div_1:iron-pages:section_3:paper-material:h1" approved="yes">\n' +
       '        <source>Contact</source>\n' +
@@ -1032,8 +1032,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           'add'    : [ 'new' ],
           'replace': [ 'needs-translation', 'needs-adaptation', 'needs-l10n', '[invalid===expression]', '[!state&&!approved&&source==target]', '' ],
           'review' : [ 'needs-review-translation', 'needs-review-adaptation', 'needs-review-l10n', '[!state&&!approved&&source!=target]' ],
+          'empty'  : [ '""',
+                       '[export&&source~=tags&&file.target-language~=de&&translate:=no&&target.state:=""&&trans-unit.approved:=yes&&target:=replaced value&&inexistent:=value&&inexistent.attr:=value]' ],
           'default': [ 'translated', 'signed-off', 'final', 
-                       '[source~=tags&&file.target-language~=de&&translate:=no&&target.state:=final&&target:=replaced value&&inexistent:=value&&inexistent.attr:=value]',
                        '[state==new&&source~=annotations]', '[approved]' ]
         }
       });
