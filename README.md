@@ -324,6 +324,36 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 - options.dataType: String, default: 'plaintext' - `<file datatype>` attribute
 - options.original: String, default: 'messages' - `<file original>` attribute
 - options.productName: String, default: 'messages' - `<file product-name>` attribute
+- options.xmlHeader: String, default: 
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+```
+- options.xliffTemplate: String, default:
+```
+<xliff version="1.0">
+  <file xml:space="[options.xmlSpace]"
+      source-language="[options.srcLanguage]"
+      target-language="[options.destLanguage]"
+      datatype="[options.dataType]"
+      original="[options.original]"
+      date="[this.date.toISOString().replace(/[.][0-9]*Z$/, 'Z')]"
+      product-name="[options.productName]">
+    <header>
+      <tool tool-id="xliff-conv" tool-name="xliff-conv" tool-version="[toolVersion]"/>
+    </header>
+    <body>
+    </body>
+  </file>
+</xliff>
+```
+- transUnitTemplate: String, default:
+```
+      <trans-unit>
+        <source></source>
+        <target></target>
+      </trans-unit>
+```
 - callback: Function, callback(output) with output XLIFF as a string
 
 ### Custom XLIFF restype attributes
