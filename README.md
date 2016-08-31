@@ -358,7 +358,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 
 #### Notes:
 - With `options.xliffTemplate`, all the attribute values within the template are NOT replaced.  It is the caller's responsibility to set appropriate values to the attributes.
-- With `options.transUnitTemplate`, XliffConv does NOT recognize `<note>` tags in the template in importing XLIFF and discard the contents.
+- With `options.transUnitTemplate`, XliffConv does NOT recognize `<note>` tags in the template in importing XLIFF and discards the contents.
 
 ### Custom XLIFF restype attributes
 
