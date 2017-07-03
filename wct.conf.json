@@ -19,7 +19,12 @@
         {
           "browserName":  "microsoftedge",
           "platform":     "Windows 10",
-          "version":      ""
+          "version":      "15"
+        },
+        {
+          "browserName":  "microsoftedge",
+          "platform":     "Windows 10",
+          "version":      "14"
         },
         {
           "browserName":  "internet explorer",
