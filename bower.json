@@ -25,6 +25,6 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "web-component-tester": "^4.2.2"
+    "web-component-tester": "t2ym/web-component-tester#^6.0.0"
   }
 }

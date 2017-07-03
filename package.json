@@ -36,7 +36,7 @@
     "lcov-result-merger": "^1.2.0",
     "mocha": "~1.21.x",
     "mocha-lcov-reporter": "^1.2.0",
-    "web-component-tester": "^4.2.2",
-    "web-component-tester-istanbul": "^0.10.0"
+    "@t2ym/web-component-tester": "^6.0.0",
+    "wct-istanbul": "^0.11.1"
   }
 }
