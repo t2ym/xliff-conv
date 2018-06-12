@@ -674,6 +674,20 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
             'export'   : true
           });
           // update state
+
+          // --Customise id and add new attribute --
+
+          if (options.addNewAttr) {
+            transUnit.setAttribute('id', id);
+            var newAttrArr = Object.getOwnPropertyNames(options.addNewAttr);
+            for (var item in newAttrArr) {
+              var valueOfNewAttr = options.addNewAttr[newAttrArr[item]];
+              transUnit.setAttribute(newAttrArr[item], valueOfNewAttr[id]);
+            }
+          }
+
+          // ---End---
+
           state = this.xliffStates[op][0];
           if (op === 'default' && !transUnit.hasAttribute('approved')) {
             transUnit.setAttribute('approved', 'yes');

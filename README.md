@@ -354,6 +354,31 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
         <target></target>
       </trans-unit>
 ```
+- Added new attribute to transUnitTemplate
+```
+      xliffConv.parseJSON(bundles, {
+        srcLanguage: srcLanguage,
+        destLanguage: destLanguage,
+        addNewAttr: {
+          newAttrName: labelArrayWithUniqueId
+        }
+      }, function (output) {
+        fs.writeFile(path.join(xliffPath, 'bundle.' + destLanguage + '.xlf'), output, resolve);
+      });
+```
+#### Note:
+labelArrayWithUniqueId is array contain new attribute for each id
+```
+{
+  "Factory_audit_address": "ckv7ymf07ahqog4lur12bwobg1z3dsxzkqkdwxan",
+  "alert_info_when_update_config_preferences": "ybsqyempsolypcf4poq1wdxxl8c04oam03ei27bc",
+  "application_title": "rj7rtcdbefchcbrq9itw6sewjifd2v3c5dn99969",
+  "back": "48gtruuew3ndd7pnj26lttt0kbgnlv2iyhtti99v",
+  "barcode_section": "i2d0t2y11b5zlrlhbn5it8qkbxbp7ub0bdgxy7tr",
+  "cancel_title": "bbzgu18z7wl6thj0eh9p83nlcrz4znyfox4khjuq",
+  "client_initial_2_letter": "ilttwryn5jccb4wnhfu3nq9z72ds21m2ho7fnsgs"
+ }
+ ```
 - callback: Function, callback(output) with output XLIFF as a string
 
 #### Notes:
