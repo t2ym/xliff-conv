@@ -330,7 +330,7 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 ```
 - options.xliffTemplate: String, default:
-```
+```xml
 <xliff version="1.0">
   <file xml:space="[options.xmlSpace]"
       source-language="[options.srcLanguage]"
@@ -347,38 +347,55 @@ XLIFF to/from JSON converter for Polymer [i18n-behavior](https://github.com/t2ym
   </file>
 </xliff>
 ```
-- transUnitTemplate: String, default:
-```
+- options.transUnitTemplate: String, default:
+```xml
       <trans-unit>
         <source></source>
         <target></target>
       </trans-unit>
 ```
-- Added new attribute to transUnitTemplate
-```
+- options.addNewAttr: Object, default: `undefined`
+  - Customize id and add a new attribute to `<trans-unit>` with the original id value
+  - labelArrayWithUniqueId is an Object mapping a new attribute value for each id
+```javascript
       xliffConv.parseJSON(bundles, {
         srcLanguage: srcLanguage,
         destLanguage: destLanguage,
         addNewAttr: {
-          newAttrName: labelArrayWithUniqueId
+          newAttrName: labelMapWithUniqueId
         }
       }, function (output) {
         fs.writeFile(path.join(xliffPath, 'bundle.' + destLanguage + '.xlf'), output, resolve);
       });
 ```
-#### Note:
-labelArrayWithUniqueId is array contain new attribute for each id
+```javascript
+      // example labelMapWithUniqueId Object
+      labelMapWithUniqueId =
+        {
+          // id: attribute value
+          "Factory_audit_address": "ckv7ymf07ahqog4lur12bwobg1z3dsxzkqkdwxan",
+          "alert_info_when_update_config_preferences": "ybsqyempsolypcf4poq1wdxxl8c04oam03ei27bc",
+          "application_title": "rj7rtcdbefchcbrq9itw6sewjifd2v3c5dn99969",
+          "back": "48gtruuew3ndd7pnj26lttt0kbgnlv2iyhtti99v",
+          "barcode_section": "i2d0t2y11b5zlrlhbn5it8qkbxbp7ub0bdgxy7tr",
+          "cancel_title": "bbzgu18z7wl6thj0eh9p83nlcrz4znyfox4khjuq",
+          "client_initial_2_letter": "ilttwryn5jccb4wnhfu3nq9z72ds21m2ho7fnsgs"
+        }
 ```
-{
-  "Factory_audit_address": "ckv7ymf07ahqog4lur12bwobg1z3dsxzkqkdwxan",
-  "alert_info_when_update_config_preferences": "ybsqyempsolypcf4poq1wdxxl8c04oam03ei27bc",
-  "application_title": "rj7rtcdbefchcbrq9itw6sewjifd2v3c5dn99969",
-  "back": "48gtruuew3ndd7pnj26lttt0kbgnlv2iyhtti99v",
-  "barcode_section": "i2d0t2y11b5zlrlhbn5it8qkbxbp7ub0bdgxy7tr",
-  "cancel_title": "bbzgu18z7wl6thj0eh9p83nlcrz4znyfox4khjuq",
-  "client_initial_2_letter": "ilttwryn5jccb4wnhfu3nq9z72ds21m2ho7fnsgs"
- }
- ```
+```xml
+      <!-- example trans-unit -->
+      <!-- without options.addNewAttr -->
+      <trans-unit id="Factory_audit_address" approved="yes">
+        <source>Address</source>
+        <target state="translated">Adresse</target>
+      </trans-unit>
+      <!-- with options.addNewAttr = { resname: labelMapWithUniqueId } above -->
+      <trans-unit id="ckv7ymf07ahqog4lur12bwobg1z3dsxzkqkdwxan" resname="Factory_audit_address" approved="yes">
+        <source>Address</source>
+        <target state="translated">Adresse</target>
+      </trans-unit>
+```
+
 - callback: Function, callback(output) with output XLIFF as a string
 
 #### Notes:
