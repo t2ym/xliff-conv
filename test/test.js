@@ -8,6 +8,9 @@ var chai = require('chai');
 
 var XliffConv = require('../xliff-conv');
 var XliffConvBasicTest = require('./basic-test.js');
+var XliffConvCustomTest = require('./custom-test');
 var basicTest = new XliffConvBasicTest();
+var customTest = new XliffConvCustomTest();
 
 basicTest.run(XliffConv, chai);
+customTest.run(XliffConv, chai);
