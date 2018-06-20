@@ -678,12 +678,9 @@ Copyright (c) 2016, Tetsuya Mori <t2y3141592@gmail.com>. All rights reserved.
           // --Customise id and add new attribute --
 
           if (options.addNewAttr) {
-            transUnit.setAttribute('id', id);
-            var newAttrArr = Object.getOwnPropertyNames(options.addNewAttr);
-            for (var item in newAttrArr) {
-              var valueOfNewAttr = options.addNewAttr[newAttrArr[item]];
-              transUnit.setAttribute(newAttrArr[item], valueOfNewAttr[id]);
-            }
+            var newAttrName = Object.getOwnPropertyNames(options.addNewAttr);
+              transUnit.setAttribute('id', options.addNewAttr[newAttrName][id]);
+              transUnit.setAttribute(newAttrName, id);
           }
 
           // ---End---
