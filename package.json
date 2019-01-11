@@ -1,12 +1,14 @@
 {
   "name": "xliff-conv",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "XLIFF to/from JSON converter for Polymer i18n-behavior",
   "scripts": {
+    "build": "node build.js",
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha test/test.js --report lcov -- -R spec && wct",
     "clean": "rm -rvf ./coverage ./coverage-browser"
   },
   "main": "xliff-conv.js",
+  "module": "xliff-conv.mjs",
   "author": "Tetsuya Mori <t2y3141592@gmail.com>",
   "license": "BSD-2-Clause",
   "bugs": {
