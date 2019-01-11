@@ -1,25 +1,27 @@
 {
   "plugins": {
     "local": {
-      "browsers": []
+      "browsers": [
+        "chrome",
+        "firefox"
+      ],
+      "browserOptions": {
+        "chrome": [
+          "headless",
+          "disable-gpu"
+        ],
+        "firefox": [
+          "-headless"
+        ]
+      }
     },
     "sauce": {
       "disabled": false,
       "browsers": [
         {
-          "browserName":  "Chrome",
-          "platform":     "Windows 10",
-          "version":      ""
-        },
-        {
-          "browserName":  "firefox",
-          "platform":     "Windows 10",
-          "version":      ""
-        },
-        {
           "browserName":  "microsoftedge",
           "platform":     "Windows 10",
-          "version":      "15"
+          "version":      "17"
         },
         {
           "browserName":  "internet explorer",
@@ -29,7 +31,12 @@
         {
           "browserName":  "safari",
           "platform":     "OS X 10.13",
-          "version":      "11"
+          "version":      "12"
+        },
+        {
+          "browserName":  "safari",
+          "platform":     "OS X 10.11",
+          "version":      "9"
         }
       ]
     },
