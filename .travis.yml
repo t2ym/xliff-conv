@@ -2,24 +2,21 @@ language: node_js
 branches:
   except:
   - gh-pages
-sudo: false
+sudo: true
 dist: trusty
 before_script:
   - npm install bower
   - 'export PATH=$PWD/node_modules/.bin:$PATH'
   - bower install
-env:
-  global:
-    - CXX=g++-4.8
 node_js:
   - "10"
 addons:
   firefox: latest
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+      - google-chrome
     packages:
-      - g++-4.8
+      - google-chrome-stable
   sauce_connect:
     username: "t2ym"
     access_key:
